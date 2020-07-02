@@ -23,18 +23,13 @@ CLIENT_NAME = "test-client-1"
 TOPIC = "test-iot-topic-1"
 
 # Broker path is under AWS IoT > Settings (at the bottom left)
-# Uncomment the next line after setting it
-BROKER_PATH = "a9z45ceeh7nmy-ats.iot.us-east-1.amazonaws.com"
+BROKER_PATH = ""
 
 # RSA 2048 bit key: Amazon Root CA 1 found here:
 # https://docs.aws.amazon.com/iot/latest/developerguide/managing-device-certs.html
 ROOT_CA_PATH = './AmazonRootCA1.pem'
 
 # These two keys are downloaded from the AWS IoT Console
-# Upload them inside the Jupyter notebook and update/uncomment them
-#PRIVATE_KEY_PATH = './d4c164edbf-private.pem.key'
-#CERTIFICATE_PATH = './d4c164edbf-certificate.pem.crt'
-
 PRIVATE_KEY_PATH = './private.pem.key'
 CERTIFICATE_PATH = './certificate.pem.crt'
 
@@ -63,7 +58,6 @@ IoTclient.configureMQTTOperationTimeout(5)
 IoTclient.connect()
 #time.sleep(5)
 #IoTclient.publish(TOPIC, json.dumps({"message":"connected"}), 0)
-
 
 loopCount = 0
 while True:

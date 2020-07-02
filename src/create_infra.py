@@ -10,7 +10,7 @@ with open('./secret.key') as json_file:
     AWS_ACCESS_KEY_ID = data['AWS_ACCESS_KEY_ID']
     AWS_SECRET_ACCESS_KEY = data['AWS_SECRET_ACCESS_KEY']
     REGION_NAME = data['REGION_NAME']
-    
+
 POLICY_NAME = 'test-policy-1'
 POLICY_DOCUMENT = {
     "Version": "2012-10-17",
@@ -24,9 +24,6 @@ POLICY_DOCUMENT = {
 }
 THING_NAME = 'test-thing-1'
 TOPIC_NAME = "test-iot-topic-1"
-
-thingArn = ''
-# thingId = ''
 
 iot_client = boto3.client('iot',
     aws_access_key_id=AWS_ACCESS_KEY_ID,
@@ -44,14 +41,6 @@ response = iot_client.create_policy(
 thing_response = iot_client.create_thing(
     thingName = THING_NAME
 )
-
-# get the things arn and id
-data = json.loads(json.dumps(thing_response, sort_keys=False, indent=4))
-for element in data: 
-    if element == 'thingArn':
-        thingArn = data['thingArn']
-    # elif element == 'thingId':
-    #     thingId = data['thingId']
 
 # create key and certificate, which will be used for authentication
 cert_response = iot_client.create_keys_and_certificate(
@@ -116,10 +105,11 @@ iam_client = boto3.client('iam',
     aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
     region_name=REGION_NAME)
 
+IAM_ROLE_NAME = 'test-iot-role-1'
 # create role
 response = iam_client.create_role(
     Path='/service-role/',
-    RoleName='test-iot-role-1',
+    RoleName=IAM_ROLE_NAME,
     AssumeRolePolicyDocument=json.dumps({
         "Version":"2012-10-17",
         "Statement":[{
@@ -149,7 +139,7 @@ response = iam_client.create_policy(
 policyArn = response['Policy']['Arn']
 # print(policyArn)
 iam_client.attach_role_policy(
-    RoleName='test-iot-role-1',
+    RoleName=IAM_ROLE_NAME,
     PolicyArn=policyArn
 )
 

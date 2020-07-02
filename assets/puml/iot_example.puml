@@ -11,18 +11,18 @@ package "Device" {
 device ..>cert
 
 package "AWS - IOT" as iot {
-  component "Device Gateway" as DG
-  component "IOT Rule" as IR
+  component "IoT Topic" as iottopic
+  component "IoT Rule" as IR
   component "IAM Role" as IAMRole
   component "Policy to\npublish to SNS" as POLICYSNS
-  package "IOT Thing" as IOTThing {
+  package "IoT Thing" as IOTThing {
     component "Thing" as thing
     component "Certificte" as CERT
     component "Policy to \npublish/subscribe \n MQQT message to \n IOT Gateway" as POLICY
 
   }
   thing o-- CERT
-  CERT o-r- POLICY
+  CERT o-d- POLICY
 
   IR o-d- IAMRole
   IAMRole o-d- POLICYSNS
@@ -38,8 +38,9 @@ package "Subscribers" as Subscribers{
   Component SMS as SMS
 }
 
-device -d-> DG : sends data in \n MQQT protocol \n secured communication via TLS
-DG -r-> IR : triggers
+cert .. CERT
+device -d-> iottopic : sends data in \n MQQT protocol \n secured communication via TLS
+iottopic -r-> IR : triggers
 IR -r-> SNSTOPIC : publish
 SNSTOPIC -r-> EMail : notifies
 EMail .. SMS 
