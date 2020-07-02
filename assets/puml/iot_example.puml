@@ -1,0 +1,48 @@
+@startuml
+
+title Example - AWS IOT
+
+skinparam componentStyle uml2
+
+package "Device" {
+  component device
+  component "certificate" as cert
+}
+device ..>cert
+
+package "AWS - IOT" as iot {
+  component "Device Gateway" as DG
+  component "IOT Rule" as IR
+  component "IAM Role" as IAMRole
+  component "Policy to\npublish to SNS" as POLICYSNS
+  package "IOT Thing" as IOTThing {
+    component "Thing" as thing
+    component "Certificte" as CERT
+    component "Policy to \npublish/subscribe \n MQQT message to \n IOT Gateway" as POLICY
+
+  }
+  thing o-- CERT
+  CERT o-r- POLICY
+
+  IR o-d- IAMRole
+  IAMRole o-d- POLICYSNS
+}
+
+package "AWS Service - SNS" as Service{
+  component "SNS-Topic" as SNSTOPIC
+}
+
+package "Subscribers" as Subscribers{  
+  component "PushChannels" as PUSHCHANNELS
+  component EMail as EMail
+  Component SMS as SMS
+}
+
+device -d-> DG : sends data in \n MQQT protocol \n secured communication via TLS
+DG -r-> IR : triggers
+IR -r-> SNSTOPIC : publish
+SNSTOPIC -r-> EMail : notifies
+EMail .. SMS 
+SMS .. PUSHCHANNELS
+
+@enduml
