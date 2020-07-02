@@ -8,4 +8,4 @@ It is about extending the power of the internet beyond computers and smartphones
 AWS IoT enables secure, bi-directional communication between Internet-connected things and the AWS cloud. This enables collection of telemetry data from multiple devices and store and analyze the data.
 
 ## Example
-Architecture diagram for the First IOT Device [./assets/images/iot-first-device.svg]
+### ![alt text](./assets/images/iot-first-device.svg)
