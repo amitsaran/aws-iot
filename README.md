@@ -7,7 +7,9 @@ It is about extending the power of the internet beyond computers and smartphones
 AWS IoT enables secure, bi-directional communication between Internet-connected things and the AWS cloud. This enables the collection of telemetry data from multiple devices and store and analyze the data.
 
 ## Example: 
-The following example registers a single device in AWS IOT; Creates a rule to publish a message to an SNS topic; SNS sends a notification to the subscribed email address.
+The following example registers a single device in AWS IOT; Creates an IoT Topic with a Policy attached to it; Creates a rule to publish a message to an SNS topic; SNS sends a notification to the subscribed email address.
+
+When any device client publishes a message to the IoT Topic, the subscribed email id receives a notification. Refer to the architecture diagram below.
 
 ### Architectue
 #### ![alt text](./assets/images/iot-first-device.svg)
@@ -16,9 +18,9 @@ Anyone can log in to his/her AWS account and create the required infrastructure 
 
 ### Code - IOT Infrastricture
 
-AWS provides SDK in all major programming language and Python is used here to develop the required infrastructure. AWS provides "AWS SDK for Python" to develop and manage AWS services and "AWS IOT SDK for Python" to develop and manage AWS IOT services. 
+AWS provides SDK in all major programming language and Python is used here to develop the required infrastructure. AWS provides "AWS SDK for Python" to develop and manage AWS services and "AWS IoT SDK for Python" to develop and manage AWS IoT services. 
 
-create_infra.py creates the required IoT Infrastructure as described in the architecture diagram. device.py mimics a configurd device and publishes/receives messages to the IoT endpoint. A detailed explanation is given below:
+create_infra.py creates the required IoT Infrastructure as described in the architecture diagram. device.py mimics a configured device and publishes/receives messages to the IoT endpoint. A detailed explanation is given below:
 
 1. "IoT Thing" - Refer to the Architecture Diagram above
     * Import statements and secret key
@@ -78,7 +80,7 @@ create_infra.py creates the required IoT Infrastructure as described in the arch
             with open('certificate.pem.crt', 'w') as outfile:
                 outfile.write(certificate_pem_crt)
         
-    * Create a Policy to be able to connect to AWS IOT and publish/subscribe messages. POLICY_NAME will be used to attach the policy to the certificate
+    * Create a Policy to be able to connect to AWS IoT and publish/subscribe messages. POLICY_NAME will be used to attach the policy to the certificate
         
             POLICY_NAME = 'test-policy-1'
             POLICY_DOCUMENT = {
@@ -120,8 +122,7 @@ create_infra.py creates the required IoT Infrastructure as described in the arch
                 aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                 region_name=REGION_NAME)
             
-      * Create IAM Role and capture the role ARN, which will be used during the creation of rule. Role name will be used to attach the policy with it.
-        
+      * Create IAM Role and capture the role ARN, which will be used during the creation of the rule. Role name will be used to attach the policy with it.        
 
                 IAM_ROLE_NAME = 'test-iot-role-1'
 
@@ -197,7 +198,7 @@ create_infra.py creates the required IoT Infrastructure as described in the arch
                 aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                 region_name=REGION_NAME)
          
-    * Create an SNS topic. Stoe the topic ARN(Amazon Resource Name), which will be used in three subsequent calls.(Creating a subscription, Policy, Rule)
+    * Create an SNS topic. Stoe the topic ARN(Amazon Resource Name), which will be used in three subsequent calls. (Creating a subscription, Policy, Rule)
         
             # create SNS topic
             SNS_TOPIC_NAME='iot-notification'
@@ -236,7 +237,7 @@ create_infra.py creates the required IoT Infrastructure as described in the arch
         from time import sleep
         from datetime import date, datetime
    
-2. Connect to the AWS Iot Device Gateway endpoint using the certificates created/downloaded during the creation of the IoT infrasture 
+2. Connect to the AWS IoT Device Gateway endpoint using the certificates created/downloaded during the creation of the IoT infrastructure 
    
         CLIENT_NAME = "test-client-1"
         TOPIC = "test-iot-topic-1"
@@ -265,7 +266,7 @@ create_infra.py creates the required IoT Infrastructure as described in the arch
         IoTclient.configureMQTTOperationTimeout(5) 
         IoTclient.connect()
    
-3. Keep publishing messages to the IoT topic. Also subscribe to the same topic with a callback function. If everything is configured properly, you should receive these messages in the subscribed email id.
+3. Keep publishing messages to the IoT topic. Also, subscribe to the same topic with a callback function. If everything is configured properly, you should receive these messages in the subscribed email id.
    
         def on_message_receive(client, userdata, message):
             print("Received a new message: ")
