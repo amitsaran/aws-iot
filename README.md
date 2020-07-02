@@ -14,7 +14,7 @@ When any device client publishes a message to the IoT Topic, the subscribed emai
 ### Architectue
 #### ![alt text](./assets/images/iot-first-device.svg)
 
-Anyone can log in to his/her AWS account and create the required infrastructure for the example above. But I have chosen to create the infrastructure using AWS SDK for Python3.
+I have chosen to create the infrastructure using AWS SDK for Python3.
 
 ### Code - IOT Infrastricture
 
