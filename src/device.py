@@ -23,7 +23,7 @@ CLIENT_NAME = "test-client-1"
 TOPIC = "test-iot-topic-1"
 
 # Broker path is under AWS IoT > Settings (at the bottom left)
-BROKER_PATH = ""
+BROKER_PATH = "a2jr0i9m2mgke2-ats.iot.us-east-1.amazonaws.com"
 
 # RSA 2048 bit key: Amazon Root CA 1 found here:
 # https://docs.aws.amazon.com/iot/latest/developerguide/managing-device-certs.html
