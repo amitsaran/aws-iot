@@ -70,16 +70,19 @@
 # Page Link
 ----------------------------------------------------------------*/
 
-.page-link {
+.page-links a {
   color: #e96b56;
   font-size: 14px;
   padding-left: 10px;
 }
 
-.page-link:hover {
+.page-links a:first-child {
+  padding-left: 0;
+}
+
+.page-links a:hover {
   color: #545454;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 15px;
   text-decoration: none;
 }
 
